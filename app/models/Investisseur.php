@@ -34,4 +34,68 @@ class Investisseur {
             'message'  => $message
         ]);
     }
+    // Get all funding requests for a specific fiche_entreprise
+    public function getDemandesByFiche($fiche_entreprise_id) {
+        $stmt = $this->pdo->prepare(
+            "SELECT d.*, i.nom as investisseur_nom, i.organisation 
+             FROM demandes_financement d
+             JOIN investisseurs i ON i.id = d.investisseur_id
+             WHERE d.fiche_entreprise_id = :fiche_id
+             ORDER BY d.date_demande DESC"
+        );
+        $stmt->execute(['fiche_id' => (int)$fiche_entreprise_id]);
+        return $stmt->fetchAll();
+    }
+    public function deleteDemande($demande_id) {
+        $stmt = $this->pdo->prepare("DELETE FROM demandes_financement WHERE id = :id");
+        return $stmt->execute(['id' => (int)$demande_id]);
+    }
+    // Create investor
+    public function createInvestisseur($data) {
+        $dbObj = new Database();
+        $db = $dbObj->getConnection();
+
+        $sql = "INSERT INTO investisseurs 
+    (nom, organisation, secteur_focus, montant_min, montant_max, description, photo, linkedin)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+
+        $stmt = $db->prepare($sql);
+        return $stmt->execute([
+            $data['nom'],
+            $data['organisation'],
+            $data['secteur_focus'],
+            $data['montant_min'],
+            $data['montant_max'],
+            $data['description'],
+            $data['photo'],
+            $data['linkedin']
+        ]);
+    }
+
+// Delete investor
+    public function delete($id) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("DELETE FROM investisseurs WHERE id = ?");
+        return $stmt->execute([$id]);
+    }
+
+// Get all demandes (admin)
+    public function getAllDemandes() {
+        $dbObj = new Database();
+        $db = $dbObj->getConnection();
+
+        $sql = "SELECT d.*, i.nom as investisseur_nom 
+            FROM demandes_financement d
+            JOIN investisseurs i ON d.investisseur_id = i.id
+            ORDER BY d.date_demande DESC";
+
+        return $db->query($sql)->fetchAll();
+    }
+
+// Update demande status
+    public function updateDemandeStatus($id, $status) {
+        $db = Database::getConnection();
+        $stmt = $db->prepare("UPDATE demandes_financement SET statut = ? WHERE id = ?");
+        return $stmt->execute([$status, $id]);
+    }
 }

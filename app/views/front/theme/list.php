@@ -32,32 +32,32 @@
 </head>
 <body class="min-h-screen">
 
-<!-- NAVBAR -->
+<!-- NAVBAR - Updated with Mes Demandes -->
 <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
-  <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
-    <a href="index.php?action=list" class="brand text-xl font-bold flex items-center gap-2">
-      <span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span>
-    </a>
-      <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-          <a href="index.php?action=list" class="nav-link font-semibold" style="color:#1D9E75">Thèmes</a>
-          <a href="#" class="hover:text-[#1D9E75]">Projets</a>
-          <a href="#" class="hover:text-[#1D9E75]">Mentors</a>
+    <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+        <a href="index.php?action=list" class="brand text-xl font-bold flex items-center gap-2">
+            <span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span>
+        </a>
+        <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+            <a href="index.php?action=list" class="nav-link font-semibold" style="color:#1D9E75">Thèmes</a>
+            <a href="#" class="hover:text-[#1D9E75]">Projets</a>
+            <a href="#" class="hover:text-[#1D9E75]">Mentors</a>
+            <a href="index.php?action=financement" class="hover:text-[#1D9E75] font-semibold flex items-center gap-1">Financement</a>
 
-          <!-- YOUR FINANCEMENT LINK -->
-          <a href="index.php?action=financement"
-             class="hover:text-[#1D9E75] font-semibold flex items-center gap-1">
-              <i class="fas fa-handshake"></i> Financement
-          </a>
+            <!-- NEW LINK -->
+            <a href="index.php?action=mes_demandes"
+               class="hover:text-[#1D9E75] font-semibold flex items-center gap-1">
+                <i class="fas fa-file-invoice"></i> Mes Demandes
+            </a>
 
-          <a href="index.php?action=admin" class="font-semibold" style="color:#EF9F27">Admin ↗</a>
-      </div>
-    <div class="flex items-center gap-3">
-      <a href="index.php?action=create" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">+ Proposer un thème</a>
-      <img src="https://i.pravatar.cc/36?img=12" class="w-9 h-9 rounded-full border-2" style="border-color:#1D9E75" alt="profil"/>
+            <a href="index.php?action=admin" class="font-semibold" style="color:#EF9F27">Admin ↗</a>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="index.php?action=create" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">+ Proposer un thème</a>
+            <img src="https://i.pravatar.cc/36?img=12" class="w-9 h-9 rounded-full border-2" style="border-color:#1D9E75" alt="profil"/>
+        </div>
     </div>
-  </div>
 </nav>
-
 <?php if ($msg): ?>
 <div class="max-w-7xl mx-auto px-6 pt-4">
   <div class="flex items-center gap-3 bg-green-50 border border-green-300 text-green-800 rounded-xl px-4 py-3 text-sm font-semibold">

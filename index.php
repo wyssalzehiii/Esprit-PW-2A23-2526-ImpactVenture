@@ -6,7 +6,7 @@ $action = $_GET['action'] ?? 'list';
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
 switch ($action) {
-    // === Existing Theme routes ===
+    // === Theme routes ===
     case 'list':
     case 'create':
     case 'store':
@@ -39,7 +39,7 @@ switch ($action) {
         }
         break;
 
-    // === YOUR NEW FINANCEMENT ROUTES ===
+    // === YOUR FINANCEMENT ROUTES ===
     case 'financement':
         $ctrl = new InvestisseurController();
         $ctrl->index();
@@ -48,6 +48,58 @@ switch ($action) {
     case 'financement_submit':
         $ctrl = new InvestisseurController();
         $ctrl->submit();
+        break;
+
+    // NEW: Investor Profile
+    case 'investisseur_profile':
+        $ctrl = new InvestisseurController();
+        $ctrl->profile($id);
+        break;
+    case 'mes_demandes':
+        $ctrl = new InvestisseurController();
+        $ctrl->mesDemandes();
+        break;
+    case 'delete_demande':
+        $ctrl = new InvestisseurController();
+        $ctrl->deleteDemande();
+        break;
+    case 'admin_financement':
+        $ctrl = new InvestisseurController();
+        $ctrl->adminList();
+        break;
+
+    case 'admin_investisseur_create':
+        $ctrl = new InvestisseurController();
+        $ctrl->adminCreate();
+        break;
+
+    case 'admin_investisseur_store':
+        $ctrl = new InvestisseurController();
+        $ctrl->adminStore();
+        break;
+
+    case 'admin_delete_investisseur':
+        $ctrl = new InvestisseurController();
+        $ctrl->deleteInvestisseur();
+        break;
+
+    case 'admin_demandes':
+        $ctrl = new InvestisseurController();
+        $ctrl->adminDemandes();
+        break;
+
+    case 'update_demande_status':
+        $ctrl = new InvestisseurController();
+        $ctrl->updateDemandeStatus();
+        break;
+    case 'admin_add_investisseur':
+        $ctrl = new InvestisseurController();
+        $ctrl->adminCreate();
+        break;
+
+    case 'admin_store_investisseur':
+        $ctrl = new InvestisseurController();
+        $ctrl->adminStore();
         break;
 
     default:

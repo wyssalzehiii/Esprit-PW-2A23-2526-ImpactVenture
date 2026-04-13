@@ -1,5 +1,6 @@
 <?php
 // app/views/front/financement/list.php
+$action = $_GET['action'] ?? '';
 if (!isset($investisseurs)) $investisseurs = [];
 $success = $_GET['success'] ?? '';
 ?>
@@ -24,21 +25,35 @@ $success = $_GET['success'] ?? '';
 </head>
 <body class="min-h-screen">
 
-<!-- NAVBAR -->
+<!-- NAVBAR - Smart Highlighting -->
 <nav class="bg-white border-b border-gray-100 sticky top-0 z-50 shadow-sm">
     <div class="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
         <a href="index.php?action=list" class="brand text-xl font-bold flex items-center gap-2">
             <span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span>
         </a>
+
         <div class="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-            <a href="index.php?action=list" class="nav-link font-semibold" style="color:#1D9E75">Thèmes</a>
+            <a href="index.php?action=list" class="nav-link font-semibold <?php echo ($action ?? '') === 'list' ? 'text-[#1D9E75]' : 'hover:text-[#1D9E75]'; ?>">Thèmes</a>
             <a href="#" class="hover:text-[#1D9E75]">Projets</a>
             <a href="#" class="hover:text-[#1D9E75]">Mentors</a>
-            <a href="index.php?action=financement" class="hover:text-[#1D9E75] font-semibold flex items-center gap-1" style="color:#1D9E75">
+
+            <!-- Financement Link - Highlighted only on this page -->
+            <a href="index.php?action=financement"
+               class="font-semibold flex items-center gap-1
+                <?php echo ($action ?? '') === 'financement' || ($action ?? '') === 'investisseur_profile' ? 'text-[#1D9E75]' : 'hover:text-[#1D9E75]'; ?>">
                 <i class="fas fa-handshake"></i> Financement
             </a>
+
+            <!-- Mes Demandes Link - Highlighted only on its page -->
+            <a href="index.php?action=mes_demandes"
+               class="font-semibold flex items-center gap-1
+                <?php echo ($action ?? '') === 'mes_demandes' ? 'text-[#EF9F27]' : 'hover:text-[#1D9E75]'; ?>">
+                <i class="fas fa-file-invoice"></i> Mes Demandes
+            </a>
+
             <a href="index.php?action=admin" class="font-semibold" style="color:#EF9F27">Admin ↗</a>
         </div>
+
         <div class="flex items-center gap-3">
             <a href="index.php?action=create" class="btn-primary px-4 py-2 rounded-lg text-sm font-semibold">+ Proposer un thème</a>
             <img src="https://i.pravatar.cc/36?img=12" class="w-9 h-9 rounded-full border-2" style="border-color:#1D9E75" alt="profil"/>
@@ -75,8 +90,8 @@ $success = $_GET['success'] ?? '';
                         <p class="text-[#1D9E75] font-medium"><?= htmlspecialchars($inv['organisation']) ?></p>
                     </div>
                     <span class="px-4 py-1.5 bg-green-100 text-green-700 text-sm font-semibold rounded-2xl">
-                        <?= htmlspecialchars($inv['secteur_focus']) ?>
-                    </span>
+            <?= htmlspecialchars($inv['secteur_focus']) ?>
+        </span>
                 </div>
 
                 <p class="text-gray-600 mb-6 leading-relaxed">
@@ -90,11 +105,19 @@ $success = $_GET['success'] ?? '';
                     </p>
                 </div>
 
-                <button onclick="showApplyModal(<?= $inv['id'] ?>, '<?= addslashes(htmlspecialchars($inv['nom'])) ?>')"
-                        class="w-full bg-[#1D9E75] hover:bg-[#15795A] text-white font-semibold py-4 rounded-2xl flex items-center justify-center gap-3 transition">
-                    <i class="fas fa-paper-plane"></i>
-                    Demander un financement
-                </button>
+                <div class="flex gap-3 mt-6">
+                    <!-- View Profile -->
+                    <a href="index.php?action=investisseur_profile&id=<?= $inv['id'] ?>"
+                       class="flex-1 text-center py-3 border border-[#1D9E75] text-[#1D9E75] font-semibold rounded-2xl hover:bg-[#1D9E75] hover:text-white transition">
+                        👁️ Voir le profil
+                    </a>
+
+                    <!-- Ask for funding -->
+                    <button onclick="showApplyModal(<?= $inv['id'] ?>, '<?= addslashes(htmlspecialchars($inv['nom'])) ?>')"
+                            class="flex-1 bg-[#1D9E75] hover:bg-[#15795A] text-white font-semibold py-3 rounded-2xl transition flex items-center justify-center gap-2">
+                        <i class="fas fa-paper-plane"></i> Demander
+                    </button>
+                </div>
             </div>
         <?php endforeach; ?>
     </div>

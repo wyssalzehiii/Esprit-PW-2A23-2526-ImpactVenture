@@ -78,7 +78,7 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-users"></i><p>Utilisateurs</p></a></li>
         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-lightbulb"></i><p>Projets</p></a></li>
         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-handshake"></i><p>Mentors</p></a></li>
-        <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-coins"></i><p>Financement</p></a></li>
+        <li class="nav-item"><a href="index.php?action=admin_financement" class="nav-link"><i class="nav-icon fas fa-coins"></i><p>Financement</p></a></li>
         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-graduation-cap"></i><p>Formations</p></a></li>
       </ul>
     </nav></div>
