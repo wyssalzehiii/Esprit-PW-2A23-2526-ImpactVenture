@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Espace Utilisateur | ImpactVenture</title>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
+
+<style>
+body {
+  background:#EEF1F7;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  height:100vh;
+}
+
+.main-card {
+  background:white;
+  padding:30px;
+  border-radius:15px;
+  box-shadow:0 10px 30px rgba(0,0,0,0.1);
+  width:100%;
+  max-width:420px;
+}
+
+.login-btn {
+  width:100%;
+  padding:10px;
+  border:none;
+  border-radius:10px;
+  background:linear-gradient(90deg,#534AB7,#7A5CFF);
+  color:white;
+  font-weight:bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="main-card">
+
+  <h4 class="text-center font-weight-bold mb-4">Espace Utilisateur</h4>
+
+  <input id="login-email" class="form-control mb-2" placeholder="Adresse Email">
+  <div id="err-login-email" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+  <input id="login-pass" type="password" class="form-control mb-2" placeholder="Mot de passe">
+  <div id="err-login-pass" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+  <div class="d-flex justify-content-between mb-3" style="font-size:0.9rem;">
+    <span></span>
+    <a href="#" onclick="openModal('forgot')">Mot de passe oublié ?</a>
+  </div>
+
+  <button onclick="validateLogin()" class="login-btn">
+    Se connecter
+  </button>
+
+  <hr>
+
+  <button class="btn btn-outline-success btn-block mb-2" onclick="openModal('signup')">
+    Créer compte
+  </button>
+
+  <button class="btn btn-outline-info btn-block mb-2" onclick="openModal('typeUser')">
+    Type d'utilisateur
+  </button>
+
+  <button class="btn btn-outline-secondary btn-block" onclick="openModal('profile')">
+    Gérer profil
+  </button>
+
+</div>
+
+<!-- MODAL -->
+<div class="modal fade" id="userModal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+
+      <div class="modal-header" style="background:#534AB7;color:white;">
+        <h5 class="modal-title" id="modalTitle"></h5>
+        <button class="close text-white" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body" id="modalBody"></div>
+
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
+
+<script>
+
+function openModal(type) {
+
+  let title = "";
+  let content = "";
+
+  if (type === "login") {
+    title = "Se connecter";
+    content = `
+      <input id="login-email" class="form-control mb-1" placeholder="Email">
+      <div id="err-login-email" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <input id="login-pass" class="form-control mb-1" type="password" placeholder="Mot de passe">
+      <div id="err-login-pass" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <button class="btn btn-success btn-block" onclick="validateLogin()">Connexion</button>
+    `;
+  }
+
+  if (type === "signup") {
+    title = "Créer compte";
+    content = `
+      <input id="signup-name" class="form-control mb-1" placeholder="Nom">
+      <div id="err-name" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <input id="signup-email" class="form-control mb-1" placeholder="Email">
+      <div id="err-signup-email" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <input id="signup-pass" class="form-control mb-1" type="password" placeholder="Mot de passe">
+      <div id="err-signup-pass" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <button class="btn btn-success btn-block" onclick="validateSignup()">Créer</button>
+    `;
+  }
+
+  if (type === "profile") {
+    title = "Gérer profil";
+    content = `
+      <button class="btn btn-outline-primary btn-block mb-2" onclick="openModal('edit')">Modifier informations</button>
+      <button class="btn btn-outline-info btn-block mb-2" onclick="openModal('portfolio')">Mettre à jour portfolio</button>
+      <button class="btn btn-outline-danger btn-block" onclick="openModal('delete')">Supprimer compte</button>
+    `;
+  }
+
+  if (type === "edit") {
+    title = "Modifier informations";
+    content = `
+      <input id="edit-name" class="form-control mb-1" placeholder="Nom">
+      <div id="err-edit-name" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <input id="edit-email" class="form-control mb-1" placeholder="Email">
+      <div id="err-edit-email" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <button class="btn btn-success btn-block" onclick="validateEdit()">Mettre à jour</button>
+    `;
+  }
+
+  if (type === "portfolio") {
+    title = "Mettre à jour portfolio";
+    content = `
+      <input id="portfolio-link" class="form-control mb-1" placeholder="Lien portfolio">
+      <div id="err-portfolio" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <button class="btn btn-success btn-block" onclick="validatePortfolio()">Mettre à jour</button>
+    `;
+  }
+
+  if (type === "delete") {
+    title = "Supprimer compte";
+    content = `
+      <p class="text-danger">Action irréversible</p>
+
+      <input id="delete-email" class="form-control mb-1" placeholder="Email">
+      <div id="err-delete-email" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <input id="delete-pass" class="form-control mb-1" type="password" placeholder="Mot de passe">
+      <div id="err-delete-pass" class="text-danger mb-2" style="display:none;font-size:0.8rem;"></div>
+
+      <button class="btn btn-danger btn-block" onclick="validateDelete()">Supprimer</button>
+    `;
+  }
+
+  if(type==="typeUser"){
+    title="Type d'utilisateur";
+    content=`
+      <button class="btn btn-outline-primary btn-block mb-2" onclick="selectRole('mentor')">👨‍🏫 Mentor</button>
+      <button class="btn btn-outline-success btn-block mb-2" onclick="selectRole('entrepreneur')">🚀 Entrepreneur</button>
+      <button class="btn btn-outline-warning btn-block mb-2" onclick="selectRole('investisseur')">💰 Investisseur</button>
+      <button class="btn btn-outline-dark btn-block" onclick="selectRole('admin')">🛠️ Admin</button>
+    `;
+  }
+
+  document.getElementById("modalTitle").innerHTML = title;
+  document.getElementById("modalBody").innerHTML = content;
+
+  $('#userModal').modal('show');
+}
+
+
+// VALIDATIONS (same logic)
+function validateLogin() {
+  let email = document.getElementById("login-email").value.trim();
+  let pass  = document.getElementById("login-pass").value.trim();
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let valid = true;
+
+  if (email.length < 5 || !emailRegex.test(email)) {
+    showError("err-login-email", "Email invalide ou trop court");
+    valid = false;
+  } else hideError("err-login-email");
+
+  if (pass.length < 6) {
+    showError("err-login-pass", "Mot de passe trop court (min 6)");
+    valid = false;
+  } else hideError("err-login-pass");
+
+  if (valid) {
+    alert("Connexion réussie !");
+    $('#userModal').modal('hide');
+  }
+}
+
+function validateSignup() {
+    let name  = document.getElementById("signup-name").value.trim();
+    let email = document.getElementById("signup-email").value.trim();
+    let pass  = document.getElementById("signup-pass").value.trim();
+    let role  = localStorage.getItem("role") || null;
+
+    let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    let valid = true;
+
+    // Réinitialisation des erreurs
+    hideError("err-name");
+    hideError("err-signup-email");
+    hideError("err-signup-pass");
+
+    if (name.length < 3) { 
+        showError("err-name", "Nom trop court (min 3)"); 
+        valid = false; 
+    }
+    if (email.length < 5 || !emailRegex.test(email)) { 
+        showError("err-signup-email", "Email invalide"); 
+        valid = false; 
+    }
+    if (pass.length < 6) { 
+        showError("err-signup-pass", "Mot de passe trop court (min 6)"); 
+        valid = false; 
+    }
+    if (!role) {
+        alert("❌ Veuillez d'abord choisir un type d'utilisateur !");
+        openModal('typeUser');
+        return;
+    }
+
+    if (!valid) return;
+
+    // === ENVOI AU SERVEUR ===
+    $.post("signup.php", {
+        name: name,
+        email: email,
+        password: pass,
+        role: role
+    })
+    .done(function(response) {
+        response = response.trim();
+        if (response === "success") {
+            alert("✅ Compte créé avec succès !");
+            $('#userModal').modal('hide');
+            localStorage.removeItem("role");   // on nettoie
+        } else {
+            alert("❌ " + response);
+        }
+    })
+    .fail(function() {
+        alert("❌ Erreur de connexion au serveur (XAMPP allumé ?)");
+    });
+}
+
+function validateEdit() {
+  let name = document.getElementById("edit-name").value.trim();
+  let email = document.getElementById("edit-email").value.trim();
+  let emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  let valid = true;
+
+  if (name.length < 3) { showError("err-edit-name","Nom trop court"); valid=false; } else hideError("err-edit-name");
+  if (email.length < 5 || !emailRegex.test(email)) { showError("err-edit-email","Email invalide"); valid=false; } else hideError("err-edit-email");
+
+  if (valid) {
+    alert("Informations mises à jour !");
+    $('#userModal').modal('hide');
+  }
+}
+
+function validatePortfolio() {
+  let link = document.getElementById("portfolio-link").value.trim();
+  if (link.length < 5) {
+    showError("err-portfolio", "Lien trop court");
+  } else {
+    hideError("err-portfolio");
+    alert("Portfolio mis à jour !");
+    $('#userModal').modal('hide');
+  }
+}
+
+function validateDelete() {
+  let email = document.getElementById("delete-email").value.trim();
+  let pass  = document.getElementById("delete-pass").value.trim();
+  let storedEmail = "test@mail.com";
+  let storedPass  = "123456";
+
+  hideError("err-delete-email");
+  hideError("err-delete-pass");
+
+  if (email === storedEmail && pass === storedPass) {
+    alert("Compte supprimé");
+    $('#userModal').modal('hide');
+  } else {
+    showError("err-delete-pass", "Email ou mot de passe incorrect");
+  }
+}
+
+function showError(id, msg) {
+  let el = document.getElementById(id);
+  el.innerText = msg;
+  el.style.display = "block";
+}
+
+function hideError(id) {
+  let el = document.getElementById(id);
+  el.innerText = "";
+  el.style.display = "none";
+}
+
+function selectRole(role){
+  alert("Vous avez choisi " + role);
+  localStorage.setItem("role", role);
+  $('#userModal').modal('hide');
+}
+
+</script>
+
+</body>
+</html>
