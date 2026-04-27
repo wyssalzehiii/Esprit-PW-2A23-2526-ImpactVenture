@@ -70,6 +70,20 @@
                          placeholder="Ex: Green Energy, IA & Innovation…">
                   <small class="text-muted">Entre 3 et 150 caractères</small>
                 </div>
+                <nav class="bg-white shadow-sm border-b">
+  <div class="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
+    <a href="index.php" class="flex items-center gap-3">
+      <img src="https://i.ibb.co.com/0jKzK7Z/impact-venture-logo.png" 
+           alt="ImpactVenture" 
+           class="h-10 w-10">
+      <div class="brand text-2xl font-bold">
+        <span class="text-[#1D9E75]">Impact</span>
+        <span class="text-[#534AB7]">Venture</span>
+      </div>
+    </a>
+    <!-- Le reste de ta navbar -->
+  </div>
+</nav>
 
                 <div class="form-group">
                   <label class="font-weight-bold">Description <span class="text-danger">*</span></label>

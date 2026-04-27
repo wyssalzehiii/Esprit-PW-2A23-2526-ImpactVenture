@@ -20,46 +20,12 @@ class FicheEntreprise {
         return $stmt->fetchAll();
     }
 
-    public function getById($id) {
-        $stmt = $this->pdo->prepare("SELECT * FROM fiche_entreprise WHERE id = :id");
-        $stmt->execute(['id' => (int)$id]);
-        return $stmt->fetch();
-    }
-
     public function create($data) {
         $stmt = $this->pdo->prepare("
-            INSERT INTO fiche_entreprise (nom, description, categorie, mots_cles, score_green, logo, created_at)
-            VALUES (:nom, :description, :categorie, :mots_cles, :score_green, :logo, NOW())
+            INSERT INTO fiche_entreprise (nom, description, categorie, mots_cles, score_green)
+            VALUES (:nom, :description, :categorie, :mots_cles, :score_green)
         ");
-        return $stmt->execute([
-            'nom' => $data['nom'],
-            'description' => $data['description'],
-            'categorie' => $data['categorie'],
-            'mots_cles' => $data['mots_cles'],
-            'score_green' => (int)$data['score_green'],
-            'logo' => $data['logo'] ?? ''
-        ]);
-    }
-
-    public function update($id, $data) {
-        $stmt = $this->pdo->prepare("
-            UPDATE fiche_entreprise SET nom=:nom, description=:description, categorie=:categorie,
-            mots_cles=:mots_cles, score_green=:score_green, logo=:logo WHERE id=:id
-        ");
-        return $stmt->execute([
-            'id' => (int)$id,
-            'nom' => $data['nom'],
-            'description' => $data['description'],
-            'categorie' => $data['categorie'],
-            'mots_cles' => $data['mots_cles'],
-            'score_green' => (int)$data['score_green'],
-            'logo' => $data['logo'] ?? ''
-        ]);
-    }
-
-    public function delete($id) {
-        $stmt = $this->pdo->prepare("DELETE FROM fiche_entreprise WHERE id = :id");
-        return $stmt->execute(['id' => (int)$id]);
+        return $stmt->execute($data);
     }
 
     public function count() {
