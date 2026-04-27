@@ -1,7 +1,7 @@
 <?php
 class Database {
     private $host   = 'localhost';
-    private $dbname = 'impactventure_db';
+    private $dbname = 'impactventure_db';   // ← Important : avec _db
     private $user   = 'root';
     private $pass   = '';
     private $pdo;

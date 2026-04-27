@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Back Office – Nouveau Thème | ImpactVenture</title>
+  <title>Back Office – Nouveau project | ImpactVenture</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
@@ -23,7 +23,7 @@
       <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link text-muted">Dashboard</a></li>
       <li class="nav-item"><span class="nav-link text-muted">/</span></li>
-      <li class="nav-item"><span class="nav-link font-weight-bold">Nouveau Thème</span></li>
+      <li class="nav-item"><span class="nav-link font-weight-bold">Nouveau project</span></li>
     </ul>
   </nav>
 
@@ -34,15 +34,15 @@
     <div class="sidebar"><nav class="mt-3"><ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
       <li class="nav-header" style="color:rgba(255,255,255,.3);font-size:.7rem;">MODULE 02</li>
-      <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Gestion Thèmes</p></a></li>
-      <li class="nav-item"><a href="index.php?action=admin_create" class="nav-link active"><i class="nav-icon fas fa-plus-circle"></i><p>Nouveau thème</p></a></li>
+      <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Gestion projects</p></a></li>
+      <li class="nav-item"><a href="index.php?action=admin_create" class="nav-link active"><i class="nav-icon fas fa-plus-circle"></i><p>Nouveau project</p></a></li>
       <li class="nav-item"><a href="index.php?action=trending" class="nav-link"><i class="nav-icon fas fa-chart-line"></i><p>Trending</p></a></li>
     </ul></nav></div>
   </aside>
 
   <div class="content-wrapper" style="background:#F7F8FC;">
     <div class="content-header py-3 px-4">
-      <h5 class="mb-0 font-weight-bold" style="font-family:'Space Grotesk',sans-serif;">Nouveau Thème</h5>
+      <h5 class="mb-0 font-weight-bold" style="font-family:'Space Grotesk',sans-serif;">Nouveau project</h5>
     </div>
     <section class="content px-4 pb-4">
       <div class="row justify-content-center">
@@ -57,7 +57,7 @@
 
           <div class="card border-0 shadow-sm rounded-lg">
             <div class="card-header bg-white">
-              <h6 class="font-weight-bold mb-0">Créer un nouveau thème</h6>
+              <h6 class="font-weight-bold mb-0">Créer un nouveau project</h6>
               <small class="text-muted">Validation PHP côté serveur — pas HTML5</small>
             </div>
             <div class="card-body">
@@ -74,7 +74,7 @@
                 <div class="form-group">
                   <label class="font-weight-bold">Description <span class="text-danger">*</span></label>
                   <textarea name="description" class="form-control" rows="3"
-                            placeholder="Décrivez ce thème et les types de projets…"><?= htmlspecialchars($_POST['description']??'') ?></textarea>
+                            placeholder="Décrivez ce project et les types de projets…"><?= htmlspecialchars($_POST['description']??'') ?></textarea>
                   <small class="text-muted">Minimum 20 caractères</small>
                 </div>
 
@@ -120,7 +120,7 @@
                     <i class="fas fa-times mr-1"></i>Annuler
                   </a>
                   <button type="submit" class="btn btn-iv-green ml-2">
-                    <i class="fas fa-save mr-1"></i> Créer le thème
+                    <i class="fas fa-save mr-1"></i> Créer le project
                   </button>
                 </div>
               </form>

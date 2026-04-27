@@ -2,7 +2,7 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Back Office – Modifier Thème | ImpactVenture</title>
+  <title>Back Office – Modifier project | ImpactVenture</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
@@ -34,7 +34,7 @@
     <div class="sidebar"><nav class="mt-3"><ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
       <li class="nav-header" style="color:rgba(255,255,255,.3);font-size:.7rem;">MODULE 02</li>
-      <li class="nav-item"><a href="index.php?action=admin" class="nav-link active"><i class="nav-icon fas fa-tags"></i><p>Gestion Thèmes</p></a></li>
+      <li class="nav-item"><a href="index.php?action=admin" class="nav-link active"><i class="nav-icon fas fa-tags"></i><p>Gestion projects</p></a></li>
       <li class="nav-item"><a href="index.php?action=trending" class="nav-link"><i class="nav-icon fas fa-chart-line"></i><p>Trending</p></a></li>
     </ul></nav></div>
   </aside>
@@ -58,7 +58,7 @@
 
           <div class="card border-0 shadow-sm rounded-lg">
             <div class="card-header bg-white">
-              <h6 class="font-weight-bold mb-0">Modifier le thème</h6>
+              <h6 class="font-weight-bold mb-0">Modifier le project</h6>
             </div>
             <div class="card-body">
               <form method="POST" action="index.php?action=admin_update&id=<?= $theme['id'] ?>">

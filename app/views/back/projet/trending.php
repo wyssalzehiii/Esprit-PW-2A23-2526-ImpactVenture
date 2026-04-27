@@ -32,21 +32,21 @@
     <div class="sidebar"><nav class="mt-3"><ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
       <li class="nav-header" style="color:rgba(255,255,255,.3);font-size:.7rem;">MODULE 02</li>
-      <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Gestion Thèmes</p></a></li>
+      <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Gestion projects</p></a></li>
       <li class="nav-item"><a href="index.php?action=trending" class="nav-link active"><i class="nav-icon fas fa-chart-line"></i><p>Trending Dashboard</p></a></li>
     </ul></nav></div>
   </aside>
   <div class="content-wrapper" style="background:#F7F8FC;">
     <div class="content-header py-3 px-4">
       <h5 class="mb-0 font-weight-bold" style="font-family:'Space Grotesk',sans-serif;">Trending Dashboard</h5>
-      <small class="text-muted">Données réelles — <?= $total ?> thèmes, score Green moyen <?= $avgGreen ?>%</small>
+      <small class="text-muted">Données réelles — <?= $total ?> projects, score Green moyen <?= $avgGreen ?>%</small>
     </div>
     <section class="content px-4 pb-4">
       <div class="row">
         <div class="col-lg-8 mb-4">
           <div class="card border-0 shadow-sm rounded-lg h-100">
             <div class="card-header bg-white border-0 pt-4 pb-0">
-              <h6 class="font-weight-bold mb-0" style="font-family:'Space Grotesk',sans-serif;">Projets par thème</h6>
+              <h6 class="font-weight-bold mb-0" style="font-family:'Space Grotesk',sans-serif;">Projets par project</h6>
             </div>
             <div class="card-body"><canvas id="barChart" height="220"></canvas></div>
           </div>
@@ -62,13 +62,13 @@
         <div class="col-12 mb-4">
           <div class="card border-0 shadow-sm rounded-lg">
             <div class="card-header bg-white border-0 pt-4 pb-2 d-flex justify-content-between align-items-center">
-              <div><h6 class="font-weight-bold mb-0" style="font-family:'Space Grotesk',sans-serif;">Classement des thèmes</h6><small class="text-muted">Données réelles</small></div>
+              <div><h6 class="font-weight-bold mb-0" style="font-family:'Space Grotesk',sans-serif;">Classement des projects</h6><small class="text-muted">Données réelles</small></div>
               <span class="badge" style="background:#D1FAE5;color:#065F46;border-radius:8px;padding:5px 10px;font-size:.75rem;">Live</span>
             </div>
             <div class="card-body p-0">
               <table class="table mb-0">
                 <thead style="background:#F8FAFC;">
-                  <tr><th class="pl-4">Rang</th><th>Thème</th><th>Catégorie</th><th>Projets</th><th>Score Green</th></tr>
+                  <tr><th class="pl-4">Rang</th><th>project</th><th>Catégorie</th><th>Projets</th><th>Score Green</th></tr>
                 </thead>
                 <tbody>
                   <?php foreach ($topThemes as $i => $t):

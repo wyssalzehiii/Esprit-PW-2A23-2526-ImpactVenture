@@ -19,7 +19,7 @@ Il n'existe aucun incubateur IA + Green en Tunisie actuellement.
 **Principales fonctionnalités :**
 - Évaluation IA des projets (score de viabilité, d'innovation et de marché)
 - Score Green (impact CO2 et social de chaque projet)
-- Smart Theme Engine : création de thèmes personnalisés + score de similarité entre projets
+- Smart Theme Engine : création de projets personnalisés + score de similarité entre projets
 - Mise en relation entrepreneur ↔ mentor expert
 - Connexion avec des investisseurs à impact
 - Formations certifiantes et système de badges numériques
@@ -112,7 +112,7 @@ Nous remercions tous ceux qui ont contribué à ce projet !
 Les personnes suivantes ont contribué à ce projet en ajoutant des fonctionnalités,
 en corrigeant des bugs ou en améliorant la documentation :
 
-- [Wyssal Zehi](https://github.com/wyssal-zehi) – Smart Theme Engine (CRUD Thèmes + Score Similarité IA + Trending Dashboard)
+- [Wyssal Zehi](https://github.com/wyssal-zehi) – Smart Theme Engine (CRUD projets + Score Similarité IA + Trending Dashboard)
 - [Moetez Chkoundali](https://github.com/moetez-chkoundali) – Authentification & Gestion Profil utilisateur
 - [Kacem Amine Akremi](https://github.com/kacem-akremi) – Soumission Projet & Évaluation IA
 - [Mohamed Omar Barhoumi](https://github.com/omar-barhoumi) – Sessions Mentoring

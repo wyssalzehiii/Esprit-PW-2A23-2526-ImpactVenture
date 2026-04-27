@@ -2,9 +2,9 @@
 -- Supprime et recrée les tables proprement
 
 DROP TABLE IF EXISTS projet;
-DROP TABLE IF EXISTS theme;
+DROP TABLE IF EXISTS FicheEntreprise;
 
-CREATE TABLE theme (
+CREATE TABLE FicheEntreprise (
     id          INT AUTO_INCREMENT PRIMARY KEY,
     nom         VARCHAR(150) NOT NULL,
     description TEXT NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE projet (
     FOREIGN KEY (theme_id) REFERENCES theme(id) ON DELETE CASCADE
 );
 
-INSERT INTO theme (nom, description, categorie, mots_cles, score_green) VALUES
+INSERT INTO FicheEntreprise (nom, description, categorie, mots_cles, score_green) VALUES
 ('Intelligence Artificielle', 'Projets autour de l IA et du machine learning', 'tech', 'ia,ml,nlp', 70),
 ('Green Energy', 'Energie solaire, eolienne et renouvelable', 'energie renouvelable', 'solaire,co2,vert', 90),
 ('AgriTech Green', 'Agriculture intelligente et durable', 'agriculture durable', 'bio,capteurs,iot', 88),

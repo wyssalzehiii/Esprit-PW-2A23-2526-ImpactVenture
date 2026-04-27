@@ -1,12 +1,12 @@
 <?php
-$msgs=['created'=>'Thème créé avec succès !','updated'=>'Thème mis à jour.','deleted'=>'Thème supprimé.'];
+$msgs=['created'=>'project créé avec succès !','updated'=>'project mis à jour.','deleted'=>'project supprimé.'];
 $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
   <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Back Office – Gestion Thèmes | ImpactVenture</title>
+  <title>Back Office – Gestion projects | ImpactVenture</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/css/adminlte.min.css"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet"/>
@@ -44,7 +44,7 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
       <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link text-muted" style="font-size:.8rem;">Dashboard</a></li>
       <li class="nav-item"><span class="nav-link text-muted">/</span></li>
-      <li class="nav-item"><span class="nav-link font-weight-bold">Gestion des Thèmes</span></li>
+      <li class="nav-item"><span class="nav-link font-weight-bold">Gestion des projects</span></li>
     </ul>
     <ul class="navbar-nav ml-auto">
       <li class="nav-item">
@@ -72,7 +72,7 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
       <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
         <li class="nav-item"><a href="index.php?action=admin" class="nav-link active"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
         <li class="nav-header" style="color:rgba(255,255,255,.3);font-size:.7rem;">MODULE 02</li>
-        <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Gestion Thèmes</p></a></li>
+        <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tags"></i><p>Gestion projects</p></a></li>
         <li class="nav-item"><a href="index.php?action=trending" class="nav-link"><i class="nav-icon fas fa-chart-line"></i><p>Trending Dashboard</p></a></li>
         <li class="nav-header" style="color:rgba(255,255,255,.3);font-size:.7rem;">AUTRES MODULES</li>
         <li class="nav-item"><a href="#" class="nav-link"><i class="nav-icon fas fa-users"></i><p>Utilisateurs</p></a></li>
@@ -89,11 +89,11 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
     <div class="content-header py-3 px-4">
       <div class="d-flex align-items-center justify-content-between">
         <div>
-          <h5 class="mb-0 font-weight-bold" style="font-family:'Space Grotesk',sans-serif;">Gestion des Thèmes</h5>
+          <h5 class="mb-0 font-weight-bold" style="font-family:'Space Grotesk',sans-serif;">Gestion des projects</h5>
           <small class="text-muted">Smart Theme Engine — CRUD complet</small>
         </div>
         <a href="index.php?action=admin_create" class="btn btn-iv-green btn-sm rounded-pill px-4">
-          <i class="fas fa-plus mr-2"></i>Nouveau thème
+          <i class="fas fa-plus mr-2"></i>Nouveau project
         </a>
       </div>
     </div>
@@ -113,7 +113,7 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
           <div class="card border-0 shadow-sm rounded-lg">
             <div class="card-body d-flex align-items-center gap-3">
               <div class="card-stat-icon" style="background:#D1FAE5;"><i class="fas fa-tags" style="color:#1D9E75;"></i></div>
-              <div><p class="mb-0 font-weight-bold" style="font-size:1.5rem;font-family:'Space Grotesk',sans-serif;"><?= $total ?></p><small class="text-muted">Thèmes actifs</small></div>
+              <div><p class="mb-0 font-weight-bold" style="font-size:1.5rem;font-family:'Space Grotesk',sans-serif;"><?= $total ?></p><small class="text-muted">projects actifs</small></div>
             </div>
           </div>
         </div>
@@ -137,7 +137,7 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
           <div class="card border-0 shadow-sm rounded-lg">
             <div class="card-body d-flex align-items-center gap-3">
               <div class="card-stat-icon" style="background:#DBEAFE;"><i class="fas fa-fire" style="color:#3B82F6;"></i></div>
-              <div><p class="mb-0 font-weight-bold" style="font-size:1rem;font-family:'Space Grotesk',sans-serif;"><?= !empty($topThemes)?htmlspecialchars(mb_substr($topThemes[0]['nom'],0,14)):'—' ?></p><small class="text-muted">Top thème</small></div>
+              <div><p class="mb-0 font-weight-bold" style="font-size:1rem;font-family:'Space Grotesk',sans-serif;"><?= !empty($topThemes)?htmlspecialchars(mb_substr($topThemes[0]['nom'],0,14)):'—' ?></p><small class="text-muted">Top project</small></div>
             </div>
           </div>
         </div>
@@ -147,8 +147,8 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
       <div class="card border-0 shadow-sm rounded-lg">
         <div class="card-header bg-white d-flex justify-content-between align-items-center">
           <div>
-            <h6 class="font-weight-bold mb-0" style="font-family:'Space Grotesk',sans-serif;">Tous les thèmes</h6>
-            <small class="text-muted"><?= $total ?> thème(s) enregistré(s)</small>
+            <h6 class="font-weight-bold mb-0" style="font-family:'Space Grotesk',sans-serif;">Tous les projects</h6>
+            <small class="text-muted"><?= $total ?> project(s) enregistré(s)</small>
           </div>
           <input type="text" id="searchInput" placeholder="Rechercher…" class="form-control form-control-sm w-auto" style="min-width:180px;">
         </div>
@@ -192,14 +192,14 @@ $msg=isset($_GET['msg'])?($msgs[$_GET['msg']]??''):'';
                     <i class="fas fa-edit"></i>
                   </a>
                   <a href="index.php?action=admin_delete&id=<?= $t['id'] ?>" class="btn btn-xs btn-danger"
-                     title="Supprimer" onclick="return confirm('Supprimer ce thème et ses projets ?')">
+                     title="Supprimer" onclick="return confirm('Supprimer ce project et ses projets ?')">
                     <i class="fas fa-trash"></i>
                   </a>
                 </td>
               </tr>
               <?php endforeach; ?>
               <?php if(empty($themes)): ?>
-              <tr><td colspan="8" class="text-center text-muted py-4">Aucun thème. <a href="index.php?action=admin_create">En créer un</a></td></tr>
+              <tr><td colspan="8" class="text-center text-muted py-4">Aucun project. <a href="index.php?action=admin_create">En créer un</a></td></tr>
               <?php endif; ?>
             </tbody>
           </table>

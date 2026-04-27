@@ -1,22 +1,58 @@
 <?php
-require_once __DIR__ . '/app/controllers/ThemeController.php';
-$action = $_GET['action'] ?? 'list';
+// ================================================
+// index.php - Routeur principal ImpactVenture
+// ================================================
+
+require_once __DIR__ . '/config/database.php';
+require_once __DIR__ . '/app/controllers/FicheEntrepriseController.php';
+require_once __DIR__ . '/app/controllers/ProjetController.php';
+
+$action = $_GET['action'] ?? 'fiche_list';
 $id     = isset($_GET['id']) ? (int)$_GET['id'] : null;
-$ctrl   = new ThemeController();
+
+$ctrlFiche = new FicheEntrepriseController();
+$ctrlProjet = new ProjetController();
 
 switch ($action) {
-    case 'list':          $ctrl->index();          break;
-    case 'create':        $ctrl->create();         break;
-    case 'store':         $ctrl->store();          break;
-    case 'edit':          $ctrl->edit($id);        break;
-    case 'update':        $ctrl->update($id);      break;
-    case 'delete':        $ctrl->delete($id);      break;
-    case 'admin':         $ctrl->adminIndex();     break;
-    case 'admin_create':  $ctrl->adminCreate();    break;
-    case 'admin_store':   $ctrl->adminStore();     break;
-    case 'admin_edit':    $ctrl->adminEdit($id);   break;
-    case 'admin_update':  $ctrl->adminUpdate($id); break;
-    case 'admin_delete':  $ctrl->adminDelete($id); break;
-    case 'trending':      $ctrl->adminTrending();  break;
-    default:              $ctrl->index();
+    // === FICHE ENTREPRISE (1ère entité) ===
+    case 'fiche_list':
+        $ctrlFiche->index();
+        break;
+    case 'fiche_create':
+        $ctrlFiche->create();
+        break;
+    case 'fiche_store':
+        $ctrlFiche->store();
+        break;
+    case 'fiche_edit':
+        $ctrlFiche->edit($id);
+        break;
+    case 'fiche_update':
+        $ctrlFiche->update($id);
+        break;
+    case 'fiche_delete':
+        $ctrlFiche->delete($id);
+        break;
+
+    // === PROJET (2ème entité) ===
+    case 'projet_list':
+        $ctrlProjet->index();
+        break;
+    case 'projet_create':
+        $ctrlProjet->create();
+        break;
+    case 'projet_store':
+        $ctrlProjet->store();
+        break;
+
+    // === BACK OFFICE ===
+    case 'admin':
+        $ctrlFiche->adminIndex();
+        break;
+    case 'admin_trending':
+        $ctrlFiche->adminTrending();
+        break;
+
+    default:
+        $ctrlFiche->index();
 }
