@@ -98,8 +98,8 @@ class ProjetController {
         // 2. Matching
         require_once __DIR__ . '/../models/MatchingModel.php';
         $matchingModel = new MatchingModel();
-        $mentors = $matchingModel->matchMentors($projet);
-        $investors = $matchingModel->matchInvestors($projet);
+        $mentors = $matchingModel->findMentors($projet);
+        $investors = $matchingModel->findInvestors($projet);
 
         // 3. Sentiment & Pitch
         $sentimentData = $projet['sentiment_data'] ? json_decode($projet['sentiment_data'], true) : null;
