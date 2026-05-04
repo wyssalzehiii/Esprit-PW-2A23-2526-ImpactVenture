@@ -1,121 +1,66 @@
 <?php
-require_once __DIR__ . '/BaseModel.php';
 
-class Projet extends BaseModel {
+class Projet {
+    private $id_projet;
+    private $id_fiche_entreprise;
+    private $titre;
+    private $description;
+    private $budget_demande;
+    private $statut;
+    private $created_at;
+    
+    // AI and Advanced Data Fields
+    private $pitch_score;
+    private $sentiment_data;
 
-    public function getAll() {
-        return $this->query("
-            SELECT p.*, f.nom as entreprise_nom, f.categorie as entreprise_categorie 
-            FROM projet p 
-            LEFT JOIN fiche_entreprise f ON p.id_fiche_entreprise = f.id 
-            ORDER BY p.date_soumission DESC
-        ")->fetchAll();
+    // Join Fields
+    private $entreprise_nom;
+    private $entreprise_categorie;
+    private $score_green;
+    private $mots_cles;
+
+    public function __construct(
+        $id_fiche_entreprise = null, 
+        $titre = "", 
+        $description = "", 
+        $budget_demande = 0, 
+        $statut = "Soumis"
+    ) {
+        $this->id_fiche_entreprise = $id_fiche_entreprise;
+        $this->titre = $titre;
+        $this->description = $description;
+        $this->budget_demande = $budget_demande;
+        $this->statut = $statut;
     }
 
-    public function getById($id) {
-        return $this->query("
-            SELECT p.*, f.nom as entreprise_nom, f.categorie as entreprise_categorie 
-            FROM projet p 
-            LEFT JOIN fiche_entreprise f ON p.id_fiche_entreprise = f.id 
-            WHERE p.id_projet = ?
-        ", [$id])->fetch();
-    }
+    // Getters
+    public function getIdProjet() { return $this->id_projet; }
+    public function getIdFicheEntreprise() { return $this->id_fiche_entreprise; }
+    public function getTitre() { return $this->titre; }
+    public function getDescription() { return $this->description; }
+    public function getBudgetDemande() { return $this->budget_demande; }
+    public function getStatut() { return $this->statut; }
+    public function getCreatedAt() { return $this->created_at; }
+    public function getPitchScore() { return $this->pitch_score; }
+    public function getSentimentData() { return $this->sentiment_data; }
+    public function getEntrepriseNom() { return $this->entreprise_nom; }
+    public function getEntrepriseCategorie() { return $this->entreprise_categorie; }
+    public function getScoreGreen() { return $this->score_green; }
+    public function getMotsCles() { return $this->mots_cles; }
 
-    public function create($data) {
-        $this->query("
-            INSERT INTO projet (titre, description, id_fiche_entreprise, id_user, statut) 
-            VALUES (?, ?, ?, ?, 'soumis')
-        ", [
-            $data['titre'], 
-            $data['description'], 
-            $data['id_fiche_entreprise'], 
-            $data['id_user'] ?? 1
-        ]);
-
-        $id_projet = $this->pdo->lastInsertId();
-
-        // Système de Badges
-        $this->checkProjectBadges($data['id_user'] ?? 1);
-
-        return $id_projet;
-    }
-
-    public function update($id, $data) {
-        $this->query("
-            UPDATE projet SET 
-                titre = ?, description = ?, id_fiche_entreprise = ?, statut = ?
-            WHERE id_projet = ?
-        ", [
-            $data['titre'], 
-            $data['description'], 
-            $data['id_fiche_entreprise'], 
-            $data['statut'] ?? 'soumis',
-            $id
-        ]);
-
-        // Système de Badges
-        $this->checkProjectBadges();
-    }
-    // ===================== SYSTEME DE BADGES (intégré dans projet) =====================
-    private function awardProjectBadge($id_fiche_entreprise, $badge_name) {
-        if (empty($id_fiche_entreprise)) return false;
-
-        $ficheModel = new FicheEntreprise();
-        $fiche = $ficheModel->getById($id_fiche_entreprise);
-        if (!$fiche) return false;
-
-        $current = !empty($fiche['badges']) ? explode(',', $fiche['badges']) : [];
-        if (in_array($badge_name, $current)) return false;
-
-        $current[] = $badge_name;
-        $new_badges = implode(',', $current);
-
-        $ficheModel->query("UPDATE fiche_entreprise SET badges = ? WHERE id = ?", 
-            [$new_badges, $id_fiche_entreprise]);
-        return true;
-    }
-
-    public function checkProjectBadges($id_user = 1) {
-        // Impact Pioneer + Green Innovator
-        $projets = $this->query("SELECT * FROM projet WHERE id_user = ?", [$id_user])->fetchAll();
-
-        foreach ($projets as $p) {
-            if ($p['statut'] === 'accepté') {
-                $this->awardProjectBadge($p['id_fiche_entreprise'], 'Impact Pioneer');
-            }
-            if (!empty($p['score_ia']) && $p['score_ia'] > 85) {
-                $this->awardProjectBadge($p['id_fiche_entreprise'], 'Green Innovator');
-            }
-        }
-
-        // Consistency King
-        if (count($projets) >= 5) {
-            $firstFiche = $projets[0]['id_fiche_entreprise'] ?? null;
-            if ($firstFiche) {
-                $this->awardProjectBadge($firstFiche, 'Consistency King');
-            }
-        }
-    }
-
-    public function delete($id) {
-        return $this->query("DELETE FROM projet WHERE id_projet = ?", [$id]);
-    }
-
-    public function count() {
-        return (int)$this->query("SELECT COUNT(*) FROM projet")->fetchColumn();
-    }
-
-    public function getStats() {
-        $row = $this->query("
-            SELECT 
-                COUNT(*) as total,
-                SUM(statut='accepté') as acceptes,
-                SUM(statut='en_evaluation') as en_evaluation,
-                SUM(statut='soumis') as soumis,
-                SUM(statut='rejeté') as rejetes,
-                AVG(score_ia) as avg_score_ia
-            FROM projet
-        ")->fetch();
-        return $row ?: [];
-    }
+    // Setters
+    public function setIdProjet($id_projet) { $this->id_projet = $id_projet; }
+    public function setIdFicheEntreprise($id_fiche_entreprise) { $this->id_fiche_entreprise = $id_fiche_entreprise; }
+    public function setTitre($titre) { $this->titre = $titre; }
+    public function setDescription($description) { $this->description = $description; }
+    public function setBudgetDemande($budget_demande) { $this->budget_demande = $budget_demande; }
+    public function setStatut($statut) { $this->statut = $statut; }
+    public function setCreatedAt($created_at) { $this->created_at = $created_at; }
+    public function setPitchScore($pitch_score) { $this->pitch_score = $pitch_score; }
+    public function setSentimentData($sentiment_data) { $this->sentiment_data = $sentiment_data; }
+    public function setEntrepriseNom($entreprise_nom) { $this->entreprise_nom = $entreprise_nom; }
+    public function setEntrepriseCategorie($entreprise_categorie) { $this->entreprise_categorie = $entreprise_categorie; }
+    public function setScoreGreen($score_green) { $this->score_green = $score_green; }
+    public function setMotsCles($mots_cles) { $this->mots_cles = $mots_cles; }
 }
+?>
