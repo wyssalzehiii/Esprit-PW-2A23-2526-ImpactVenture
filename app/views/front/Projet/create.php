@@ -13,14 +13,14 @@
 
 <nav class="bg-white border-b shadow-sm sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="index.php?action=fiche_list" class="brand flex items-center gap-2">
+    <a href="<?= htmlspecialchars(iv_url(['action'=>'fiche_list']), ENT_QUOTES, 'UTF-8') ?>" class="brand flex items-center gap-2">
       <img src="logo.png" alt="ImpactVenture Logo" style="height: 40px; width: auto; object-fit: contain;">
       <span class="text-2xl font-bold"><span class="text-[#1D9E75]">Impact</span><span class="text-[#534AB7]">Venture</span></span>
     </a>
     <div class="flex gap-8 text-sm font-medium">
-      <a href="index.php?action=fiche_list" class="hover:text-[#1D9E75]">Entreprises</a>
-      <a href="index.php?action=projet_list" class="text-[#534AB7] font-semibold">Projets</a>
-      <a href="index.php?action=admin" class="text-amber-600">Admin</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'fiche_list']), ENT_QUOTES, 'UTF-8') ?>" class="hover:text-[#1D9E75]">Entreprises</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'projet_list']), ENT_QUOTES, 'UTF-8') ?>" class="text-[#534AB7] font-semibold">Projets</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'admin']), ENT_QUOTES, 'UTF-8') ?>" class="text-amber-600">Admin</a>
     </div>
   </div>
 </nav>
@@ -40,7 +40,7 @@
   </div>
   <?php endif; ?>
 
-  <form method="POST" action="index.php?action=projet_store" class="bg-white rounded-3xl shadow-xl p-10 space-y-6">
+  <form method="POST" action="<?= htmlspecialchars(iv_url(['action'=>'projet_store']), ENT_QUOTES, 'UTF-8') ?>" class="bg-white rounded-3xl shadow-xl p-10 space-y-6">
 
     <div>
       <label class="block text-sm font-semibold mb-2">Titre du Projet <span class="text-red-500">*</span></label>
@@ -95,7 +95,7 @@
     </div>
 
     <div class="flex justify-between items-center pt-4">
-      <a href="index.php?action=projet_list" class="text-gray-500 hover:text-gray-700 text-sm">← Annuler</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'projet_list']), ENT_QUOTES, 'UTF-8') ?>" class="text-gray-500 hover:text-gray-700 text-sm">← Annuler</a>
       <button type="submit"
               class="bg-[#1D9E75] hover:bg-[#15795A] text-white px-10 py-4 rounded-2xl font-semibold transition">
         Soumettre le Projet
@@ -121,7 +121,7 @@ document.getElementById('btnAnalyze').addEventListener('click', function() {
     formData.append('titre', titre);
     formData.append('description', desc);
 
-    fetch('index.php?action=analyze_projet', {
+    fetch('<?= htmlspecialchars(iv_url(['action'=>'analyze_projet']), ENT_QUOTES, 'UTF-8') ?>', {
         method: 'POST',
         body: formData
     })
@@ -142,3 +142,4 @@ document.getElementById('btnAnalyze').addEventListener('click', function() {
 </script>
 </body>
 </html>
+

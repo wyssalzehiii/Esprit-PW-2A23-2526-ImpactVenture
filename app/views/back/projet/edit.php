@@ -23,7 +23,7 @@
     <ul class="navbar-nav">
       <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
       <li class="nav-item"><a href="index.php?action=admin_projet" class="nav-link text-muted">Projets</a></li>
-      <li class="nav-item"><span class="nav-link font-weight-bold">/ Modifier #<?= $projet['id_projet'] ?? '' ?></span></li>
+      <li class="nav-item"><span class="nav-link font-weight-bold">/ Modifier #<?= (int)($projet['id_projet'] ?? 0) ?></span></li>
     </ul>
   </nav>
   <aside class="main-sidebar sidebar-dark-primary elevation-2">
@@ -50,7 +50,7 @@
         <div class="card border-0 shadow-sm rounded-lg">
           <div class="card-header bg-white"><h6 class="font-weight-bold mb-0">Modifier le Projet</h6></div>
           <div class="card-body">
-            <form method="POST" action="index.php?action=admin_projet_update&id=<?= $projet['id_projet'] ?>">
+            <form method="POST" action="index.php?action=admin_projet_update&id=<?= (int)$projet['id_projet'] ?>">
               <div class="form-group">
                 <label class="font-weight-bold">Titre <span class="text-danger">*</span></label>
                 <input type="text" name="titre" class="form-control" value="<?= htmlspecialchars($_POST['titre']??$projet['titre']) ?>">

@@ -28,11 +28,16 @@
   </nav>
 
   <aside class="main-sidebar sidebar-dark-primary elevation-2">
+<<<<<<< HEAD
     <a href="index.php?action=admin" class="brand-link px-4 py-3 d-flex align-items-center" style="gap:10px;border-bottom:1px solid rgba(255,255,255,.1);">
       <img src="logo.png" alt="ImpactVenture Logo" style="height: 35px; width: auto; object-fit: contain;">
       <span class="brand-logo brand-text">
         <span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span>
       </span>
+=======
+    <a href="index.php?action=admin" class="brand-link px-4 py-3" style="border-bottom:1px solid rgba(255,255,255,.1);">
+      <span class="brand-logo brand-text" style="color:#1D9E75;">Impact</span><span class="brand-logo brand-text" style="color:#534AB7;">Venture</span>
+>>>>>>> f5459eb02e4a15a255e2e3c52c09f2a74fa75945
     </a>
     <div class="sidebar"><nav class="mt-3"><ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview">
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>

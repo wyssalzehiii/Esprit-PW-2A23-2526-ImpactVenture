@@ -2,7 +2,7 @@
 $fiches   = $fiches ?? [];
 $total    = $total ?? 0;
 $stats    = $stats ?? [];
-$avgGreen = $stats['avg_score_ia'] ? round($stats['avg_score_ia']) : 0;
+$avgGreen = !empty($stats['avg_score_ia']) ? round($stats['avg_score_ia']) : 0;
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -25,18 +25,18 @@ $avgGreen = $stats['avg_score_ia'] ? round($stats['avg_score_ia']) : 0;
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
+
   <nav class="main-header navbar navbar-expand navbar-white navbar-light border-bottom">
     <ul class="navbar-nav">
       <li class="nav-item"><a class="nav-link" data-widget="pushmenu" href="#"><i class="fas fa-bars"></i></a></li>
       <li class="nav-item"><span class="nav-link font-weight-bold">Trending Dashboard</span></li>
     </ul>
   </nav>
+
   <aside class="main-sidebar sidebar-dark-primary elevation-2">
     <a href="index.php?action=admin" class="brand-link px-4 py-3 d-flex align-items-center" style="gap:10px;">
-      <img src="logo.png" alt="ImpactVenture Logo" style="height: 35px; width: auto; object-fit: contain;">
-      <span class="brand-logo brand-text">
-        <span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span>
-      </span>
+      <img src="logo.png" alt="ImpactVenture Logo" style="height:35px;width:auto;object-fit:contain;">
+      <span class="brand-logo brand-text"><span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span></span>
     </a>
     <div class="sidebar"><nav class="mt-3"><ul class="nav nav-pills nav-sidebar flex-column">
       <li class="nav-item"><a href="index.php?action=admin" class="nav-link"><i class="nav-icon fas fa-tachometer-alt"></i><p>Dashboard</p></a></li>
@@ -45,6 +45,7 @@ $avgGreen = $stats['avg_score_ia'] ? round($stats['avg_score_ia']) : 0;
       <li class="nav-item"><a href="index.php?action=trending" class="nav-link active"><i class="nav-icon fas fa-chart-line"></i><p>Trending</p></a></li>
     </ul></nav></div>
   </aside>
+
   <div class="content-wrapper" style="background:#F7F8FC">
     <div class="content-header py-3 px-4">
       <h5 class="mb-0 font-weight-bold" style="font-family:'Space Grotesk',sans-serif">Trending Dashboard</h5>
@@ -79,7 +80,7 @@ $avgGreen = $stats['avg_score_ia'] ? round($stats['avg_score_ia']) : 0;
                   <?php foreach ($fiches as $i => $f):
                     $rc = $i===0?'rank-1':($i===1?'rank-2':($i===2?'rank-3':'rank-n'));
                     $bc = $f['score_green']>=70?'#1D9E75':($f['score_green']>=40?'#EF9F27':'#E24B4A');
-                    $tags = array_filter(array_map('trim', explode(',', $f['mots_cles'])));
+                    $tags = array_filter(array_map('trim', explode(',', $f['mots_cles'] ?? '')));
                   ?>
                   <tr class="trend-row">
                     <td class="pl-4"><span class="rank-badge <?=$rc?>"><?=$i+1?></span></td>
@@ -104,6 +105,7 @@ $avgGreen = $stats['avg_score_ia'] ? round($stats['avg_score_ia']) : 0;
   </div>
   <footer class="main-footer py-2 px-4"><small class="text-muted">ImpactVenture — Esprit 2025–2026</small></footer>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>

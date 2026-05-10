@@ -93,6 +93,7 @@ entreprises.forEach(e => {
             <p>📍 ${e.ville || 'Tunisie'}</p>
             <p>📊 ${e.nb_projets || 0} projet(s)</p>
             <p><span class="score" style="${scoreStyle}">🌱 ${e.score_green}% Green</span></p>
+            ${e.dernier_projet_id ? `<div style="margin-top:8px;text-align:center;"><a href="index.php?action=projet_show&id=${e.dernier_projet_id}" style="display:inline-block;background:#1D9E75;color:white;padding:6px 12px;border-radius:8px;text-decoration:none;font-size:12px;font-weight:600;">Voir le projet →</a></div>` : ''}
         </div>
     `);
     markers.addLayer(marker);

@@ -4,9 +4,9 @@ $sdgs = $sdgs ?? [];
 $mentors = $mentors ?? [];
 $investors = $investors ?? [];
 $sentimentData = $sentimentData ?? null;
-$pitchScore = $pitchScore ?? 0;
-$scoreGreen = $scoreGreen ?? 0;
-$viabilityScore = $projet['viability_score'] ?? 0;
+$pitchScore = $pitchScore ?? ($projet['pitch_score'] ?? 0);
+$scoreGreen = $scoreGreen ?? ($projet['score_green'] ?? 0);
+$viabilityScore = isset($viabilityScore) ? $viabilityScore : ($projet['viability_score'] ?? 0);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -21,20 +21,65 @@ $viabilityScore = $projet['viability_score'] ?? 0;
     .brand{font-family:'Space Grotesk',sans-serif;} 
     .card{background: #fff; border-radius: 1.5rem; padding: 1.5rem; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03); transition: transform 0.2s;}
     .card:hover{transform: translateY(-2px);}
+    
+    /* Score counter animations */
+    .score-counter {
+      display: inline-block;
+      animation: countUp 1.5s ease-out;
+    }
+    
+    @keyframes countUp {
+      from { opacity: 0; transform: scale(0.5); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    
+    /* Project cards clickable */
+    .project-card {
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .project-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Badge tooltips */
+    .badge-locked {
+      position: relative;
+      cursor: help;
+    }
+    
+    .badge-locked:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #1f2937;
+      color: white;
+      padding: 8px 12px;
+      border-radius: 6px;
+      white-space: nowrap;
+      font-size: 12px;
+      z-index: 1000;
+      margin-bottom: 8px;
+    }
   </style>
 </head>
 <body class="min-h-screen text-slate-800 pb-20">
 
 <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="index.php?action=fiche_list" class="brand flex items-center gap-2">
+    <a href="<?= htmlspecialchars(iv_url(['action'=>'fiche_list']), ENT_QUOTES, 'UTF-8') ?>" class="brand flex items-center gap-2">
       <img src="logo.png" alt="ImpactVenture Logo" style="height: 40px; width: auto; object-fit: contain;">
       <span class="text-2xl font-bold"><span class="text-[#1D9E75]">Impact</span><span class="text-[#534AB7]">Venture</span></span>
     </a>
     <div class="flex gap-6 text-sm font-medium">
-      <a href="index.php?action=projet_list" class="text-slate-500 hover:text-[#1D9E75]">← Projets</a>
-      <a href="index.php?action=chatbot&id_projet=<?= $projet['id_projet'] ?>" class="text-[#534AB7] hover:underline">💬 Chatbot Coach</a>
-      <a href="index.php?action=business_plan&id_projet=<?= $projet['id_projet'] ?>&generate=1" class="text-[#1D9E75] hover:underline">📄 Générer PDF</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'projet_list']), ENT_QUOTES, 'UTF-8') ?>" class="text-slate-500 hover:text-[#1D9E75]">← Projets</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'chatbot','id_projet'=>$projet['id_projet']]), ENT_QUOTES, 'UTF-8') ?>" class="text-[#534AB7] hover:underline">💬 Chatbot Coach</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'financement']), ENT_QUOTES, 'UTF-8') ?>" class="text-[#EF9F27] hover:underline font-semibold">💰 Financement</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'business_plan','id_projet'=>$projet['id_projet'],'generate'=>1]), ENT_QUOTES, 'UTF-8') ?>" class="text-[#1D9E75] hover:underline">📄 Générer PDF</a>
     </div>
   </div>
 </nav>
@@ -52,8 +97,8 @@ $viabilityScore = $projet['viability_score'] ?? 0;
       <p class="text-slate-500 text-lg">Incubé par <span class="font-semibold text-[#1D9E75]"><?= htmlspecialchars($projet['entreprise_nom'] ?? 'N/A') ?></span></p>
     </div>
     <div class="flex gap-3">
-        <a href="index.php?action=pitch_deck&id_projet=<?= $projet['id_projet'] ?>&generate=1" class="px-5 py-2.5 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition shadow-lg">🎥 Pitch Deck Auto</a>
-        <a href="index.php?action=business_plan&id_projet=<?= $projet['id_projet'] ?>&generate=1" class="px-5 py-2.5 bg-[#534AB7] text-white font-medium rounded-xl hover:bg-indigo-700 transition shadow-lg">📄 Rapport Complet</a>
+        <a href="<?= htmlspecialchars(iv_url(['action'=>'pitch_deck','id_projet'=>$projet['id_projet'],'generate'=>1]), ENT_QUOTES, 'UTF-8') ?>" class="px-5 py-2.5 bg-slate-900 text-white font-medium rounded-xl hover:bg-slate-800 transition shadow-lg">🎥 Pitch Deck Auto</a>
+        <a href="<?= htmlspecialchars(iv_url(['action'=>'business_plan','id_projet'=>$projet['id_projet'],'generate'=>1]), ENT_QUOTES, 'UTF-8') ?>" class="px-5 py-2.5 bg-[#534AB7] text-white font-medium rounded-xl hover:bg-indigo-700 transition shadow-lg">📄 Rapport Complet</a>
     </div>
   </div>
 
@@ -69,7 +114,7 @@ $viabilityScore = $projet['viability_score'] ?? 0;
                 <div class="relative w-32 h-32">
                     <canvas id="greenChart"></canvas>
                     <div class="absolute inset-0 flex items-center justify-center flex-col">
-                        <span class="text-3xl font-bold text-[#1D9E75]"><?= $scoreGreen ?>%</span>
+                        <span class="text-3xl font-bold text-[#1D9E75] score-counter" data-target="<?= $scoreGreen ?>"><?= $scoreGreen ?>%</span>
                     </div>
                 </div>
                 <p class="mt-4 text-sm text-slate-600">Impact environnemental estimé</p>
@@ -80,7 +125,7 @@ $viabilityScore = $projet['viability_score'] ?? 0;
                 <div class="relative w-32 h-32">
                     <canvas id="viabilityChart"></canvas>
                     <div class="absolute inset-0 flex items-center justify-center flex-col">
-                        <span class="text-3xl font-bold text-[#534AB7]"><?= $viabilityScore ?>%</span>
+                        <span class="text-3xl font-bold text-[#534AB7] score-counter" data-target="<?= $viabilityScore ?>"><?= $viabilityScore ?>%</span>
                     </div>
                 </div>
                 <a href="index.php?action=viability&id_projet=<?= $projet['id_projet'] ?>" class="mt-4 text-sm text-[#534AB7] font-medium hover:underline">Recalculer les données →</a>
@@ -98,16 +143,16 @@ $viabilityScore = $projet['viability_score'] ?? 0;
             <?php if($sentimentData): ?>
             <div class="grid grid-cols-3 gap-4 mb-4">
                 <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-xs text-slate-500 mb-1">Clarté</p>
-                    <p class="font-bold text-slate-800 text-lg"><?= $sentimentData['clarity'] ?? 0 ?>%</p>
+                    <p class="text-2xl font-bold text-slate-700"><?= $sentimentData['sentiment'] ?? 0 ?></p>
+                    <p class="text-xs text-slate-500">Sentiment</p>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-xs text-slate-500 mb-1">Confiance</p>
-                    <p class="font-bold text-slate-800 text-lg"><?= $sentimentData['confidence'] ?? 0 ?>%</p>
+                    <p class="text-2xl font-bold text-slate-700"><?= $sentimentData['clarte'] ?? 0 ?></p>
+                    <p class="text-xs text-slate-500">Clarté</p>
                 </div>
                 <div class="bg-slate-50 p-4 rounded-xl text-center">
-                    <p class="text-xs text-slate-500 mb-1">Professionnalisme</p>
-                    <p class="font-bold text-slate-800 text-lg"><?= $sentimentData['professionalism'] ?? 0 ?>%</p>
+                    <p class="text-2xl font-bold text-slate-700"><?= $sentimentData['professionnalisme'] ?? 0 ?></p>
+                    <p class="text-xs text-slate-500">Professionnalisme</p>
                 </div>
             </div>
             <div class="bg-indigo-50 text-indigo-800 p-4 rounded-xl text-sm">
@@ -130,11 +175,17 @@ $viabilityScore = $projet['viability_score'] ?? 0;
                         <div class="space-y-3">
                             <?php foreach(array_slice($mentors, 0, 3) as $m): ?>
                             <div class="flex items-center justify-between p-3 bg-slate-50 rounded-xl border border-slate-100">
-                                <div>
+                                <div class="flex-1">
                                     <p class="font-semibold text-sm"><?= htmlspecialchars($m['nom']) ?></p>
                                     <p class="text-xs text-slate-500"><?= htmlspecialchars($m['specialite']) ?></p>
                                 </div>
-                                <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded-md"><?= $m['score'] ?>%</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs font-bold text-emerald-600 bg-emerald-100 px-2 py-1 rounded-md"><?= $m['score'] ?>%</span>
+                                    <button onclick="expressInterest('<?= htmlspecialchars($m['slug']) ?>', <?= $projet['id_projet'] ?>, this)" 
+                                            class="text-xs bg-pink-100 text-pink-700 hover:bg-pink-200 px-3 py-1.5 rounded-lg transition-all duration-200 flex items-center gap-1">
+                                        💌 Intéressé
+                                    </button>
+                                </div>
                             </div>
                             <?php endforeach; ?>
                         </div>
@@ -162,7 +213,7 @@ $viabilityScore = $projet['viability_score'] ?? 0;
                 </div>
             </div>
             <div class="mt-4 text-center">
-                <a href="index.php?action=matching&id_projet=<?= $projet['id_projet'] ?>" class="text-sm text-[#1D9E75] font-semibold hover:underline">Voir tous les résultats de matching →</a>
+                <a href="<?= htmlspecialchars(iv_url(['action'=>'matching','id_projet'=>$projet['id_projet']]), ENT_QUOTES, 'UTF-8') ?>" class="text-sm text-[#1D9E75] font-semibold hover:underline">Voir tous les résultats de matching →</a>
             </div>
         </div>
 
@@ -197,17 +248,29 @@ $viabilityScore = $projet['viability_score'] ?? 0;
         <div class="card">
             <h3 class="text-lg font-bold brand mb-4 border-b pb-3 border-slate-100">🏆 Badges de l'Entreprise</h3>
             <p class="text-sm text-slate-500 mb-4">Ces badges sont gagnés grâce aux performances IA de la plateforme.</p>
-            <a href="index.php?action=badges&id_fiche=<?= $projet['id_fiche_entreprise'] ?>" class="block w-full text-center py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">
+            <a href="<?= htmlspecialchars(iv_url(['action'=>'badges','id_fiche'=>$projet['id_fiche_entreprise']]), ENT_QUOTES, 'UTF-8') ?>" class="block w-full text-center py-3 bg-slate-100 text-slate-700 rounded-xl font-semibold hover:bg-slate-200 transition text-sm">
                 Voir les Badges Obtenus
             </a>
+        </div>
+
+        <!-- Recommendations -->
+        <div class="card bg-yellow-50 border border-yellow-200">
+            <h3 class="text-lg font-bold text-yellow-700 brand mb-4">🎯 Vos Prochaines Étapes</h3>
+            <div class="space-y-3">
+                <?php foreach ($nextStepRecs ?? [] as $rec): ?>
+                    <div class="p-3 bg-white rounded-lg border border-yellow-100">
+                        <p class="text-sm text-gray-800"><?= $rec ?></p>
+                    </div>
+                <?php endforeach; ?>
+            </div>
         </div>
 
         <!-- Actions Rapides -->
         <div class="card bg-[#1D9E75]/10 border border-[#1D9E75]/20">
             <h3 class="text-lg font-bold text-[#1D9E75] brand mb-4">Actions Rapides</h3>
             <div class="space-y-2">
-                <a href="index.php?action=projet_edit&id=<?= $projet['id_projet'] ?>" class="block w-full py-2.5 px-4 bg-white text-slate-700 rounded-lg text-sm font-medium hover:shadow-sm transition">✏️ Modifier le projet</a>
-                <a href="index.php?action=projet_delete&id=<?= $projet['id_projet'] ?>" onclick="return confirm('Êtes-vous sûr ?')" class="block w-full py-2.5 px-4 bg-white text-red-600 rounded-lg text-sm font-medium hover:shadow-sm transition">🗑️ Supprimer</a>
+                <a href="<?= htmlspecialchars(iv_url(['action'=>'projet_edit','id'=>$projet['id_projet']]), ENT_QUOTES, 'UTF-8') ?>" class="block w-full py-2.5 px-4 bg-white text-slate-700 rounded-lg text-sm font-medium hover:shadow-sm transition">✏️ Modifier le projet</a>
+                <a href="<?= htmlspecialchars(iv_url(['action'=>'projet_delete','id'=>$projet['id_projet']]), ENT_QUOTES, 'UTF-8') ?>" onclick="return confirm('Êtes-vous sûr ?')" class="block w-full py-2.5 px-4 bg-white text-red-600 rounded-lg text-sm font-medium hover:shadow-sm transition">🗑️ Supprimer</a>
             </div>
         </div>
 
@@ -243,6 +306,65 @@ const createGauge = (ctxId, value, color) => {
 
 createGauge('greenChart', <?= $scoreGreen ?>, '#1D9E75');
 createGauge('viabilityChart', <?= $viabilityScore ?>, '#534AB7');
+
+// Score counter animation
+document.addEventListener('DOMContentLoaded', function() {
+    const counters = document.querySelectorAll('.score-counter');
+    
+    counters.forEach(counter => {
+        const target = parseInt(counter.getAttribute('data-target'));
+        const duration = 1500; // 1.5 seconds
+        const step = target / (duration / 16); // 60fps
+        let current = 0;
+        
+        const timer = setInterval(() => {
+            current += step;
+            if (current >= target) {
+                current = target;
+                clearInterval(timer);
+            }
+            counter.textContent = Math.round(current) + '%';
+        }, 16);
+    });
+});
+
+// Mentor Interest Function
+function expressInterest(mentorSlug, projetId, button) {
+    if (button.disabled) return;
+    
+    button.disabled = true;
+    button.innerHTML = '⏳ Envoi...';
+    
+    fetch('index.php?action=mentor_interest', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+        },
+        body: `mentor_slug=${encodeURIComponent(mentorSlug)}&projet_id=${projetId}`
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            button.innerHTML = '✅ Intérêt enregistré';
+            button.classList.remove('bg-pink-100', 'text-pink-700', 'hover:bg-pink-200');
+            button.classList.add('bg-green-100', 'text-green-700');
+        } else {
+            button.innerHTML = '❌ Erreur';
+            setTimeout(() => {
+                button.disabled = false;
+                button.innerHTML = '💌 Intéressé';
+            }, 2000);
+        }
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        button.innerHTML = '❌ Erreur';
+        setTimeout(() => {
+            button.disabled = false;
+            button.innerHTML = '💌 Intéressé';
+        }, 2000);
+    });
+}
 </script>
 
 </body>

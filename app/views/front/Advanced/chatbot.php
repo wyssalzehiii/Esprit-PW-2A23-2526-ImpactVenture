@@ -49,12 +49,44 @@
     </div>
   </div>
 
-  <!-- Suggestions rapides -->
-  <div class="flex flex-wrap gap-2 mb-6">
-    <?php $suggestions = ['Comment améliorer mon pitch ?','Stratégies marketing startup','Comment lever des fonds en Tunisie ?','Conseils pour mon business model','Comment calculer mon TAM/SAM/SOM ?'];
+  <!-- Suggestions dynamiques basées sur les scores -->
+  <div class="flex flex-wrap gap-2 mb-6" id="dynamicSuggestions">
+    <?php 
+    $suggestions = [];
+    if ($id_projet && !empty($projets)) {
+        $currentProjet = null;
+        foreach ($projets as $p) {
+            if ($p['id_projet'] == $id_projet) {
+                $currentProjet = $p;
+                break;
+            }
+        }
+        
+        if ($currentProjet) {
+            $bp = ['market_score' => 0, 'innovation_score' => 0, 'sustainability_score' => 0, 'risk_score' => 0];
+            if (function_exists('composeScoreBlueprint')) {
+                // We'll need to pass the controller instance or calculate here
+                $marketScore = $currentProjet['viability_score'] ?? 50;
+                $innovationScore = $currentProjet['score_ia'] ?? 50;
+                $sustainabilityScore = $currentProjet['score_green'] ?? 50;
+                $riskScore = 70; // Default
+                
+                if ($marketScore < 50) $suggestions[] = "Comment améliorer ma stratégie marché ?";
+                if ($innovationScore < 50) $suggestions[] = "Quelle technologie pour {$currentProjet['titre']} ?";
+                if ($sustainabilityScore < 60) $suggestions[] = "Comment renforcer l'impact environnemental ?";
+                if ($riskScore > 60) $suggestions[] = "Comment réduire le risque de mon projet ?";
+            }
+        }
+    }
+    
+    // Fallback suggestions if no project or no specific weaknesses
+    if (empty($suggestions)) {
+        $suggestions = ['Comment améliorer mon pitch ?', 'Stratégie pour mon secteur', 'Levée de fonds Tunisie'];
+    }
+    
     foreach($suggestions as $s): ?>
-    <button onclick="sendSuggestion('<?= $s ?>')" class="glass px-4 py-2 rounded-full text-xs hover:bg-white/10 transition text-gray-300 hover:text-white">
-      <?= $s ?>
+    <button onclick="sendSuggestion('<?= addslashes($s) ?>')" class="glass px-4 py-2 rounded-full text-xs hover:bg-white/10 transition text-gray-300 hover:text-white">
+      <?= htmlspecialchars($s) ?>
     </button>
     <?php endforeach; ?>
   </div>
@@ -130,13 +162,15 @@ function sendSuggestion(text) {
     sendMessage(new Event('submit'));
 }
 
-async function sendMessage(e) {
+async function sendMessage(e, regenerate = false) {
     e.preventDefault();
     const message = chatInput.value.trim();
-    if (!message) return;
+    if (!message && !regenerate) return;
 
-    addMessage(message, 'user');
-    chatInput.value = '';
+    if (!regenerate) {
+        addMessage(message, 'user');
+        chatInput.value = '';
+    }
     sendBtn.disabled = true;
     showTyping();
 
@@ -146,18 +180,55 @@ async function sendMessage(e) {
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({
                 message: message,
-                id_projet: document.getElementById('contextProjet').value || null
+                id_projet: document.getElementById('contextProjet').value || null,
+                regenerate: regenerate
             })
         });
         const data = await response.json();
         hideTyping();
-        addMessage(data.response || 'Erreur de réponse', 'bot');
+        
+        if (data.error) {
+            addMessage('❌ ' + data.error, 'bot');
+        } else {
+            const botMessage = addMessage(data.response || 'Erreur de réponse', 'bot');
+            
+            // Add regenerate button to bot message
+            if (data.response && !regenerate) {
+                const regenerateBtn = document.createElement('button');
+                regenerateBtn.innerHTML = '🔄 Régénérer';
+                regenerateBtn.className = 'text-xs bg-gray-100 hover:bg-gray-200 text-gray-600 px-2 py-1 rounded mt-2 transition';
+                regenerateBtn.onclick = () => regenerateResponse(message);
+                botMessage.appendChild(regenerateBtn);
+            }
+        }
     } catch (err) {
         hideTyping();
         addMessage('❌ Erreur de connexion. Veuillez réessayer.', 'bot');
     }
     sendBtn.disabled = false;
     chatInput.focus();
+}
+
+function regenerateResponse(originalMessage) {
+    const event = new Event('submit');
+    sendMessage(event, true);
+}
+
+function addMessage(text, role) {
+    const div = document.createElement('div');
+    div.className = role === 'user' ? 'msg-user' : 'msg-bot';
+    div.innerHTML = `
+        <div class="px-5 py-3 rounded-2xl ${
+            role === 'user' 
+                ? 'bg-emerald-500 text-white ml-auto max-w-[70%]' 
+                : 'bg-white/10 text-gray-100 max-w-[70%]'
+        }">
+            ${text}
+        </div>
+    `;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return div;
 }
 </script>
 </body>

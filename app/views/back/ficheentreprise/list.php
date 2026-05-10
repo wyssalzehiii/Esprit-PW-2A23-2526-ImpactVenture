@@ -4,7 +4,8 @@ $total    = $total ?? count($fiches);
 $avgGreen = $avgGreen ?? 0;
 $totalP   = $totalP ?? 0;
 $msgs = ['created'=>'Fiche créée !','updated'=>'Mise à jour réussie.','deleted'=>'Fiche supprimée.'];
-$msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
+$msgCode = $_GET['msg'] ?? '';
+$msg = $msgs[$msgCode] ?? '';
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -23,6 +24,7 @@ $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
   </style>
 </head>
 <body class="hold-transition sidebar-mini">
+
 <div class="wrapper">
 
   <nav class="main-header navbar navbar-expand navbar-white navbar-light">
@@ -124,6 +126,7 @@ $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
   </div>
   <footer class="main-footer py-2 px-4"><small class="text-muted">ImpactVenture — Esprit School of Engineering | 2025–2026</small></footer>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>

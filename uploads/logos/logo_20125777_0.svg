@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="dmk" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#38bdf8"/>
+      <stop offset="100%" style="stop-color:#0c4a6e"/>
+    </linearGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-opacity="0.18"/>
+    </filter>
+  </defs>
+  <rect width="512" height="512" fill="#f0f9ff"/>
+  <g filter="url(#sh)">
+    <path d="M 118 256 L 178 156 L 258 156 L 318 256 L 258 356 L 178 356 Z" fill="url(#dmk)"/>
+    <path d="M 188 216 Q 228 236 268 216" stroke="#ffffff" stroke-width="8" fill="none" stroke-linecap="round" opacity="0.95"/>
+    <path d="M 198 276 Q 238 296 278 276" stroke="#ffffff" stroke-width="5" fill="none" stroke-linecap="round" opacity="0.85"/>
+  </g>
+  <text x="348" y="230" font-family="Segoe UI, Tahoma, Arial, sans-serif" font-size="28" font-weight="700" fill="#38bdf8">Green Energy Africa</text>
+  <text x="348" y="272" font-family="Segoe UI, Tahoma, Arial, sans-serif" font-size="13" font-weight="600" fill="#0284c7" letter-spacing="0.12em">ENERGIE RENOUVELABLE</text>
+  <rect x="348" y="288" width="140" height="3" fill="#f59e0b" rx="1"/>
+</svg>

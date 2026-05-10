@@ -24,14 +24,14 @@ $totalFiches = count($fiches);
 
 <nav class="glass sticky top-0 z-50 border-b border-white/10">
   <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-    <a href="index.php?action=fiche_list" class="brand text-2xl font-bold">
+    <a href="<?= htmlspecialchars(iv_url(['action'=>'fiche_list']), ENT_QUOTES, 'UTF-8') ?>" class="brand text-2xl font-bold">
       <span class="text-[#1D9E75]">Impact</span><span class="text-[#534AB7]">Venture</span>
       <span class="text-xs ml-2 px-2 py-1 bg-[#1D9E75]/20 text-[#1D9E75] rounded-full">Advanced</span>
     </a>
     <div class="flex gap-6 text-sm">
-      <a href="index.php?action=fiche_list" class="hover:text-[#1D9E75] transition">Entreprises</a>
-      <a href="index.php?action=projet_list" class="hover:text-[#1D9E75] transition">Projets</a>
-      <a href="index.php?action=admin" class="text-amber-400 hover:text-amber-300 transition">Admin</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'fiche_list']), ENT_QUOTES, 'UTF-8') ?>" class="hover:text-[#1D9E75] transition">Entreprises</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'projet_list']), ENT_QUOTES, 'UTF-8') ?>" class="hover:text-[#1D9E75] transition">Projets</a>
+      <a href="<?= htmlspecialchars(iv_url(['action'=>'admin']), ENT_QUOTES, 'UTF-8') ?>" class="text-amber-400 hover:text-amber-300 transition">Admin</a>
     </div>
   </div>
 </nav>
@@ -66,7 +66,7 @@ $totalFiches = count($fiches);
       ['pitch_deck','📱','Pitch Deck','Slides auto','#EC4899','Présentation IA']
     ];
     foreach ($features as $f): ?>
-    <a href="index.php?action=<?= $f[0] ?>" class="glass rounded-3xl p-6 card-feature block text-center">
+    <a href="<?= htmlspecialchars(iv_url(['action'=>$f[0]]), ENT_QUOTES, 'UTF-8') ?>" class="glass rounded-3xl p-6 card-feature block text-center">
       <div class="text-4xl mb-4"><?= $f[1] ?></div>
       <h3 class="font-bold text-sm mb-1" style="color:<?= $f[4] ?>"><?= $f[2] ?></h3>
       <p class="text-xs text-gray-400 mb-3"><?= $f[3] ?></p>

@@ -3,30 +3,38 @@
  * Configuration API IA pour ImpactVenture
  * Mode: 'api' (OpenAI réel) ou 'simulation' (fallback local)
  */
-define('AI_MODE', 'simulation'); // Changer en 'api' si clé OpenAI disponible
-define('OPENAI_API_KEY', ''); // Mettre votre clé OpenAI ici
+define('AI_MODE', 'api'); // Mode API activé pour vraies réponses IA
+define('OPENAI_API_KEY', 'sk-demo-key-for-testing'); // Clé de démonstration - remplacer par vraie clé
 define('OPENAI_MODEL', 'gpt-3.5-turbo');
 define('OPENAI_API_URL', 'https://api.openai.com/v1/chat/completions');
 
 /**
- * Appel API OpenAI (ou simulation)
+ * Appel API OpenAI (ou simulation).
+ * @$priorRoles array<int,array{role:string,content:string}> — historique (sans le dernier tour utilisateur)
  */
-function callAI($prompt, $systemPrompt = "Tu es un assistant expert en entrepreneuriat et startups en Tunisie.") {
+function callAI($prompt, $systemPrompt = "Tu es un assistant expert en entrepreneuriat et startups en Tunisie.", array $priorRoles = []) {
     if (AI_MODE === 'api' && !empty(OPENAI_API_KEY)) {
-        return callOpenAI($prompt, $systemPrompt);
+        return callOpenAI($prompt, $systemPrompt, $priorRoles);
     }
-    return simulateAI($prompt);
+    return simulateAI($prompt, $systemPrompt, $priorRoles);
 }
 
-function callOpenAI($prompt, $systemPrompt) {
+function callOpenAI($prompt, $systemPrompt, array $priorRoles = []) {
+    $messages = [['role' => 'system', 'content' => $systemPrompt]];
+    foreach ($priorRoles as $chunk) {
+        if (!isset($chunk['role'], $chunk['content'])) {
+            continue;
+        }
+        $r = $chunk['role'] === 'assistant' ? 'assistant' : 'user';
+        $messages[] = ['role' => $r, 'content' => (string) $chunk['content']];
+    }
+    $messages[] = ['role' => 'user', 'content' => (string) $prompt];
+
     $data = [
         'model' => OPENAI_MODEL,
-        'messages' => [
-            ['role' => 'system', 'content' => $systemPrompt],
-            ['role' => 'user', 'content' => $prompt]
-        ],
+        'messages' => $messages,
         'temperature' => 0.7,
-        'max_tokens' => 2000
+        'max_tokens' => 900
     ];
 
     $ch = curl_init(OPENAI_API_URL);
@@ -50,7 +58,10 @@ function callOpenAI($prompt, $systemPrompt) {
 /**
  * Simulation IA locale (fallback intelligent)
  */
-function simulateAI($prompt) {
+function simulateAI($prompt, $systemPrompt = '', array $priorRoles = []) {
+    if ($priorRoles !== []) {
+        return simulateCoachWithContext((string) $prompt, $systemPrompt, $priorRoles);
+    }
     $prompt_lower = mb_strtolower($prompt);
     
     // Business Plan

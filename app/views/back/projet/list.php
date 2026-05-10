@@ -1,7 +1,7 @@
 <?php
 $projets = $projets ?? [];
 $stats   = $stats ?? [];
-$msgs = ['created'=>'Projet créé !','updated'=>'Projet modifié.','deleted'=>'Projet supprimé.'];
+$msgs = ['created'=>'✅ Projet créé !','updated'=>'✅ Projet modifié.','deleted'=>'🗑️ Projet supprimé.'];
 $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
 ?>
 <!DOCTYPE html>
@@ -29,7 +29,7 @@ $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
 
   <aside class="main-sidebar sidebar-dark-primary elevation-2">
     <a href="index.php?action=admin" class="brand-link px-4 py-3 d-flex align-items-center" style="gap:10px;">
-      <img src="logo.png" alt="ImpactVenture Logo" style="height: 35px; width: auto; object-fit: contain;">
+      <img src="logo.png" alt="ImpactVenture Logo" style="height:35px;width:auto;object-fit:contain;">
       <span class="brand-logo brand-text">
         <span style="color:#1D9E75">Impact</span><span style="color:#534AB7">Venture</span>
       </span>
@@ -50,16 +50,20 @@ $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
       <?php if($msg): ?><div class="alert alert-success mx-0"><?= htmlspecialchars($msg) ?></div><?php endif; ?>
 
       <div class="row mb-3">
-        <div class="col-lg-3 col-6"><div class="small-box bg-primary"><div class="inner"><h3><?= $stats['total'] ?? 0 ?></h3><p>Total Projets</p></div><div class="icon"><i class="fas fa-lightbulb"></i></div></div></div>
-        <div class="col-lg-3 col-6"><div class="small-box bg-success"><div class="inner"><h3><?= $stats['acceptes'] ?? 0 ?></h3><p>Acceptés</p></div><div class="icon"><i class="fas fa-check"></i></div></div></div>
+        <div class="col-lg-3 col-6"><div class="small-box bg-primary"><div class="inner"><h3><?= $stats['soumis'] ?? 0 ?></h3><p>Soumis</p></div><div class="icon"><i class="fas fa-inbox"></i></div></div></div>
         <div class="col-lg-3 col-6"><div class="small-box bg-warning"><div class="inner"><h3><?= $stats['en_evaluation'] ?? 0 ?></h3><p>En Évaluation</p></div><div class="icon"><i class="fas fa-hourglass"></i></div></div></div>
-        <div class="col-lg-3 col-6"><div class="small-box bg-info"><div class="inner"><h3><?= $stats['soumis'] ?? 0 ?></h3><p>Soumis</p></div><div class="icon"><i class="fas fa-inbox"></i></div></div></div>
+        <div class="col-lg-3 col-6"><div class="small-box bg-success"><div class="inner"><h3><?= $stats['accepté'] ?? 0 ?></h3><p>Acceptés</p></div><div class="icon"><i class="fas fa-check"></i></div></div></div>
+        <div class="col-lg-3 col-6"><div class="small-box bg-danger"><div class="inner"><h3><?= $stats['rejeté'] ?? 0 ?></h3><p>Rejetés</p></div><div class="icon"><i class="fas fa-times"></i></div></div></div>
       </div>
 
       <div class="card">
         <div class="card-header d-flex justify-content-between align-items-center">
           <h3 class="card-title">Liste des Projets</h3>
-          <a href="index.php?action=projet_create" class="btn btn-sm" style="background:#1D9E75;color:#fff;"><i class="fas fa-plus mr-1"></i>Nouveau Projet</a>
+          <div class="btn-group">
+            <a href="index.php?action=admin_projet_export&format=csv" class="btn btn-sm btn-outline-primary mr-2"><i class="fas fa-download mr-1"></i>Export CSV</a>
+            <a href="index.php?action=admin_projet_export&format=excel" class="btn btn-sm btn-outline-success mr-2"><i class="fas fa-file-excel mr-1"></i>Export Excel</a>
+            <a href="index.php?action=projet_create" class="btn btn-sm" style="background:#1D9E75;color:#fff;"><i class="fas fa-plus mr-1"></i>Nouveau Projet</a>
+          </div>
         </div>
         <div class="card-body table-responsive p-0">
           <table class="table table-hover">
@@ -81,7 +85,7 @@ $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
                   </span>
                 </td>
                 <td><?= $p['score_ia'] ? '<strong>'.round($p['score_ia']).'</strong>' : '—' ?></td>
-                <td><small><?= date('d/m/Y', strtotime($p['date_soumission'])) ?></small></td>
+                <td><small><?= !empty($p['date_soumission']) ? date('d/m/Y', strtotime($p['date_soumission'])) : '—' ?></small></td>
                 <td>
                   <a href="index.php?action=admin_projet_edit&id=<?= $p['id_projet'] ?>" class="btn btn-sm btn-warning"><i class="fas fa-edit"></i></a>
                   <a href="index.php?action=admin_projet_delete&id=<?= $p['id_projet'] ?>" onclick="return confirm('Supprimer ce projet ?')" class="btn btn-sm btn-danger"><i class="fas fa-trash"></i></a>
@@ -97,6 +101,7 @@ $msg = isset($_GET['msg']) ? ($msgs[$_GET['msg']] ?? '') : '';
   </div>
   <footer class="main-footer py-2 px-4"><small class="text-muted">ImpactVenture — Esprit 2025–2026</small></footer>
 </div>
+
 <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/admin-lte@3.2/dist/js/adminlte.min.js"></script>
